@@ -1,0 +1,83 @@
+options{}
+PARSER_BEGIN(MyNewGrammar)
+import java.util.Scanner;
+public class MyNewGrammar
+{
+public static void main(String args [])
+throws
+ParseException,java.io.FileNotFoundException
+{
+    Scanner scanner= new Scanner(System.in);
+      String file=scanner.next();
+MyNewGrammar parser = new
+MyNewGrammar(new java.io.FileInputStream(file));
+parser.Input();
+}
+}
+PARSER_END(MyNewGrammar)
+SKIP :
+{
+" "
+| "\r"
+| "\t"
+| "\n"
+}
+TOKEN :
+{
+< Plus : "+" >
+| < Number : (["0"-"9"])+ >
+| < Assignment: ":=" >
+| < Semicolon: ";" >
+| < If: "if" >
+| < Else: "else" >
+| < LeftParenthesis : "(" >
+| < RightParenthesis : ")" >
+| < LeftBrace : "{" >
+| < RightBrace : "}" >
+| < InputEnd: "end" >
+| < Compare: ">" | "<" | "==" >
+| < Id: ["a"-"z","A"-"Z"] ( ["a"-
+"z","A"-"Z","0"-"9"] )* >
+}
+void Input():
+{}
+{
+AssignStatment() < EOF >
+| IfStatment() < EOF >
+}
+void IfStatment():
+{}
+{
+< If > CompareStatment() <
+LeftBrace > (AssignStatment())+ <
+RightBrace >
+(< Else > < LeftBrace >
+(AssignStatment())+ < RightBrace > )?
+{ System.out.println("If Statment is done"); }
+}
+void CompareStatment():
+{}
+{
+< LeftParenthesis > TotolResult() <
+Compare > TotolResult() <
+RightParenthesis >
+}
+void AssignStatment():
+{}
+{
+< Id > < Assignment >
+TotolResult() < Semicolon >
+{
+System.out.println("Assignment Statment is done"); }
+}
+void TotolResult():
+{}
+{
+Number() (< Plus >
+TotolResult() )?
+}
+void Number():
+{}
+{
+< Number >
+}

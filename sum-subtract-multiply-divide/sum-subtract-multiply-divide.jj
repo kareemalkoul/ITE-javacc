@@ -1,0 +1,52 @@
+options{}
+PARSER_BEGIN(MyNewGrammar)
+public class MyNewGrammar
+{
+public static void main(String args [])
+throws ParseException
+{
+MyNewGrammar parser = new
+MyNewGrammar(System.in);
+parser.Input();
+}
+}
+PARSER_END(MyNewGrammar)
+SKIP :
+{
+" "
+| "\r"
+| "\t"
+| "\n"
+}
+TOKEN :
+{
+< PLUS : "+" | "-" >
+| < MULTIPLY : "*" | "/" >
+| < NUM : (["0"-"9"])+ >
+}
+void Input() :
+{}
+{
+TotolResult() ";"<EOF>
+}
+void TotolResult() :
+{}
+{
+MultiplyResult() (< PLUS > TotolResult() )?
+{
+System.out.println("TotalResult method is done");}
+}
+void MultiplyResult():
+{}
+{
+Number() (< MULTIPLY > MultiplyResult() )?
+{
+System.out.println("MultiplyResultmethod is done");}
+}
+void Number():
+{}
+{
+< NUM >
+{
+System.out.println("Number is matched");}
+}

@@ -1,0 +1,121 @@
+options{}
+PARSER_BEGIN(MyNewGrammar)
+import java.lang.Math;
+
+public class MyNewGrammar
+{
+public static void main(String
+args []) throws ParseException
+{
+MyNewGrammar parser = new
+MyNewGrammar(System.in);
+parser.Input();
+}
+}
+PARSER_END(MyNewGrammar)
+SKIP :
+{
+" "
+| "\r"
+| "\t"
+| "\n"
+}
+TOKEN :
+{
+< PLUS : "+" >
+| < MINUS : "-">
+| < MULTIPLY : "*">
+| < DIVISION : "/">
+| < POWER : "**" >
+| < NUM : (["0"-"9"])+ >
+}
+void Input() :
+{
+double Result;
+}
+{
+Result=TotolResult() ";"
+{
+System.out.println("The Result is: "+Result);
+}
+<EOF>
+}
+double TotolResult() :
+{
+double numValue1;
+double numValue2=0;
+double result=0;
+Token t=null;
+
+}
+{
+numValue1=multi()(
+t=< PLUS > numValue2=multi()
+{
+System.out.println("TotalResult method is done");
+ result= numValue1+numValue2;
+
+}
+|
+t=< MINUS> numValue2=multi()
+{
+System.out.println("TotalResult method is done");
+ result= numValue1-numValue2;
+}
+)*
+{
+if (t==null) return numValue1;
+
+return result;
+}
+}
+double multi():
+{
+ double numValue1;
+ double numValue2=0;
+ double result=0;
+ Token t=null;
+}
+{
+numValue1=Number()
+(
+    t=< MULTIPLY > numValue2=Number()
+{
+System.out.println("TotalResult method is done");
+  result=numValue1*numValue2;
+}
+|
+ t=< DIVISION > numValue2=Number()
+{
+System.out.println("TotalResult method is done");
+result=numValue1/numValue2;
+}
+|
+t=<POWER> numValue2=Number()
+{
+System.out.println("TotalResult method is done");
+result=Math.pow(numValue1,numValue2);
+System.out.println(""+numValue1+" "+numValue2);
+}
+)*
+{
+if(t==null) return numValue1;
+return result;}
+}
+
+double Number():
+{
+ Token t;
+ double result=0;
+}
+{
+t=< NUM >
+{
+System.out.println("Number is matched");
+return Double.parseDouble(t.image);
+}|"(" result=TotolResult() ")"
+{
+ System.out.println("Parentheses are matched");
+ return result;
+}
+}

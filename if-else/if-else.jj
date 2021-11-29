@@ -1,0 +1,79 @@
+options{}
+PARSER_BEGIN(MyNewGrammar)
+
+public class MyNewGrammar
+{
+public static void main(String args
+[]) throws ParseException
+{
+MyNewGrammar parser = new
+MyNewGrammar(System.in);
+parser.Input();
+}
+}
+PARSER_END(MyNewGrammar)
+SKIP :
+{
+" "
+| "\r"
+| "\t"
+| "\n"
+}
+TOKEN :
+{
+< Plus : "+" >
+| < Number : (["0"-"9"])+ >
+| < Assignment: ":=" >
+| < Semicolon: ";" >
+| < If: "if" >
+| < Else: "else" >
+| < LeftParenthesis : "(" >
+| < RightParenthesis : ")" >
+| < LeftBrace : "{" >
+| < RightBrace : "}" >
+| < InputEnd: "end" >
+| < Compare: ">" | "<" | "==" >
+| < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-
+"Z","0"-"9"] )* >
+}
+void Input():
+{}
+{
+AssignStatement() < InputEnd >
+| IfStatment() < InputEnd >
+}
+void IfStatment():
+{}
+{
+< If > CompareStatement() <
+LeftBrace > (AssignStatement())+ <
+RightBrace >
+(< Else > < LeftBrace >
+(AssignStatement())+ < RightBrace > )?
+{ System.out.println("If Statement is done"); }
+}
+void CompareStatement():
+{}
+{
+< LeftParenthesis > TotolResult() <
+Compare > TotolResult() <
+RightParenthesis >
+}
+void AssignStatement():
+{}
+{
+< Id > < Assignment >
+TotolResult() < Semicolon >
+{ System.out.println("Assignment Statement is done"); }
+}
+void TotolResult():
+{}
+{
+Number() (< Plus > TotolResult()
+)?
+}
+void Number():
+{}
+{
+< Number >
+}

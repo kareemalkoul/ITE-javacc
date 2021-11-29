@@ -1,0 +1,54 @@
+options{}
+PARSER_BEGIN(MyNewGrammar)
+
+public class MyNewGrammar
+{
+public static void main(String
+args []) throws ParseException
+{
+MyNewGrammar parser = new
+MyNewGrammar(System.in);
+parser.Input();
+}
+}
+PARSER_END(MyNewGrammar)
+SKIP :
+{
+" "
+| "\r"
+| "\t"
+| "\n"
+}
+TOKEN :
+{
+< Plus : "+" >
+| < Number : (["0"-"9"])+ >
+| < Assignment: ":=" >
+| < Semicolon: ";" >
+| < InputEnd: "end" >
+| < Id: ["a"-"z","A"-"Z"] ( ["a"-
+"z","A"-"Z","0"-"9"] )* >
+}
+void Input():
+{}
+{
+AssignStatment() < InputEnd >
+}
+void AssignStatment():
+{}
+{
+< Id > < Assignment > TotolResult() < Semicolon >
+{ System.out.println("Assignment Statment is done"); }
+}
+void TotolResult():
+{}
+{
+Number() (< Plus > TotolResult() )?
+{System.out.println("TotalResult method is done");}
+}
+void Number():
+{}
+{
+< Number >
+{System.out.println("Number is matched");}
+}

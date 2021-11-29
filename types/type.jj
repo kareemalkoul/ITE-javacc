@@ -1,0 +1,56 @@
+options {
+
+}
+PARSER_BEGIN(MyNewGrammar)
+
+public class MyNewGrammar {
+public static void main
+(String args []) throws
+ParseException {
+MyNewGrammar parser = new MyNewGrammar
+(System
+.in);
+parser
+.Input();
+}
+}
+PARSER_END(MyNewGrammar
+)
+SKIP
+:
+{
+" " | "\r" | "\t" | "\n" }
+TOKEN
+:
+{
+< PLUS : "+"|"-">
+|< MULTIPLY : "*"| "/">
+|< Type: "double "| "bool ">
+|< DOUBLE:(["0"-"9"])+("."(["0"-"9"])+)?(("e"|"E")("+"|"-")?(["0"-"9"])+)?>
+|< Bool: "True"| "False">
+|< Id:["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9"] )*>
+}
+void Input() :
+{}
+{
+Statment()<EOF>
+}
+void Statment() :
+{}{< Type>< Id> " = " Content() ";"
+{
+System.out.println(" variable is decleared");
+}
+}
+void Content():
+{String s;}
+{< Bool>
+{
+s="Bool";
+System.out.print(s);
+}
+|< DOUBLE>
+{
+s="Double";
+System.out.print(s);
+}
+}

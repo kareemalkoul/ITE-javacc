@@ -1,0 +1,42 @@
+options{}
+PARSER_BEGIN(MyNewGrammar)
+public class MyNewGrammar
+{
+public static void main(String args [])
+throws ParseException
+{
+MyNewGrammar parser = new
+MyNewGrammar(System.in);
+parser.Input();
+}
+}
+PARSER_END(MyNewGrammar)
+SKIP :
+{
+" "
+| "\r"
+| "\t"
+| "\n"
+}
+TOKEN :
+{
+< PLUS : "+" | "-" >
+| < NUM : (["0"-"9"])+ >
+}
+void Input() :
+{}
+{
+TotolResult() ";"<EOF>
+}
+void TotolResult() :
+{}
+{
+Number() (< PLUS > TotolResult())?
+{System.out.println("TotalResultmethod is done");}
+}
+void Number():
+{}
+{
+< NUM >
+{System.out.println("Number ismatched");}
+}
